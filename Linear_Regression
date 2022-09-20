@@ -1,0 +1,57 @@
+#packages and IO
+
+import numpy as np
+# Input and Output data
+x = np.array([2,4,6,8],  dtype=float)
+y = np.array([3,7,5,10],  dtype=float)
+
+# Define error function
+def error(y_hat):
+  return np.mean(np.square(y-y_hat)) # Means Squared Error b/w Actual and Predicted Output
+  
+# Hyperparameters
+m = 30
+c = 45
+learning_rate = 0.01 # The learning Rate
+epochs = 30000 # The number of iterations to perform gradient descent
+
+n = len(x)
+error_vals = []
+
+# Performing Gradient Descent
+for i in range(epochs):
+  # Forward propagation (basically multiplication)
+  y_hat = m*x + c # The current predicted value of Y
+
+  # Calculate Mean Squared Error
+  error_vals.append(error(y_hat))
+  print(error_vals[i])
+
+  # Find the Gradients
+  de_dm = (-2/n) * np.sum(x * (y - y_hat)) # Derivative of error function wrt m
+  de_dc = (-2/n) * np.sum(y - y_hat) # Derivative of error function wrt c
+
+  # Back propagation (update the weights)
+  m = m - (de_dm * learning_rate)
+  c = c - (de_dc * learning_rate)
+  
+# Now check the slope and intercept value
+print(c) # 31.934677394134408
+print(m) # 1.8021320545942183
+
+# Predict
+print(m * 45 + c) # 100.4156954687147
+
+# Predicted values and Actual Values
+y_hat = m*x + c
+print(y_hat) # Predictions
+print(error(y_hat)) # 0.05572622807250253
+
+noepochs=[]
+for i in range(0,epochs):
+  noepochs.append(i)
+print(noepochs)
+
+#visualizing linear regression
+import matplotlib.pyplot as plt
+plt.plot(noepochs,error_vals)
